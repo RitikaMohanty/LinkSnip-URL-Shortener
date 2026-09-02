@@ -1,0 +1,6 @@
+{
+  "name": "LinkSnip",
+  "description": "URL Shortening Service with custom aliases, real-time click analytics, QR codes, safe browsing scanner, and developer REST API.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
