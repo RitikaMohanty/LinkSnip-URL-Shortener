@@ -102,7 +102,6 @@ export const QuickShortenCard: React.FC<QuickShortenCardProps> = ({
       setMaxClicks("");
       setPassword("");
       setIsPasswordProtected(false);
-      setShowAdvanced(false);
     } catch (err: any) {
       setErrorMsg(err.message || "An unexpected error occurred");
     } finally {

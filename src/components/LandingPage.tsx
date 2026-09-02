@@ -67,9 +67,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       setCreatedLink(data.link);
       onLinkCreated(data.link);
       setOriginalUrl("");
-      setCustomAlias("");
-      setTitle("");
-      setShowAdvanced(false);
     } catch (err: any) {
       setErrorMsg(err.message || "An unexpected error occurred");
     } finally {
