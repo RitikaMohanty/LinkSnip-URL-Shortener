@@ -14,9 +14,6 @@ import {
   Zap,
   Globe,
   Shield,
-  ChevronDown,
-  ChevronUp,
-  SlidersHorizontal,
 } from "lucide-react";
 import { LinkItem, FolderItem, UserProfile } from "../types";
 
@@ -41,11 +38,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({
   const [createdLink, setCreatedLink] = useState<LinkItem | null>(null);
   const [copied, setCopied] = useState(false);
 
-  // Advanced options
-  const [showAdvanced, setShowAdvanced] = useState(false);
-  const [customAlias, setCustomAlias] = useState("");
-  const [title, setTitle] = useState("");
-
   const hostUrl = typeof window !== "undefined" ? window.location.origin : "";
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -64,8 +56,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           originalUrl: originalUrl.trim(),
-          customAlias: user && customAlias.trim() ? customAlias.trim() : undefined,
-          title: user && title.trim() ? title.trim() : undefined,
         }),
       });
 
@@ -177,58 +167,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               </button>
             </div>
 
-            {/* Options toggle */}
-            <div className="lp-shortener-options-toggle">
-              <button
-                type="button"
-                onClick={() => setShowAdvanced(!showAdvanced)}
-                className="lp-options-toggle-btn"
-              >
-                <SlidersHorizontal size={14} />
-                <span>Advanced Options</span>
-                {showAdvanced ? (
-                  <ChevronUp size={14} />
-                ) : (
-                  <ChevronDown size={14} />
-                )}
-              </button>
-            </div>
-
-            {/* Advanced options panel */}
-            {showAdvanced && (
-              <div className="lp-shortener-options-panel">
-                <div className="lp-form-group">
-                  <label className="lp-form-label">Custom Alias</label>
-                  <div className="lp-input-with-prefix">
-                    <span className="lp-input-prefix">/r/</span>
-                    <input
-                      type="text"
-                      className="lp-form-input"
-                      value={customAlias}
-                      onChange={(e) =>
-                        setCustomAlias(
-                          e.target.value
-                            .toLowerCase()
-                            .replace(/[^a-z0-9-_]/g, "")
-                        )
-                      }
-                      placeholder="my-custom-slug"
-                      maxLength={30}
-                    />
-                  </div>
-                </div>
-                <div className="lp-form-group">
-                  <label className="lp-form-label">Link Title</label>
-                  <input
-                    type="text"
-                    className="lp-form-input lp-form-input-full"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    placeholder="e.g. Summer Promo 2026"
-                  />
-                </div>
-              </div>
-            )}
           </form>
 
           {/* Error */}
@@ -268,15 +206,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             </div>
           )}
         </div>
-
-        {/* CTA to enter dashboard */}
-        <button
-          onClick={onEnterDashboard}
-          className="lp-btn lp-btn-ghost lp-cta-dashboard"
-        >
-          <span>Go to Dashboard</span>
-          <ArrowRight size={16} />
-        </button>
       </section>
 
       {/* Stats Strip */}
@@ -340,19 +269,27 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           Start creating branded, trackable short links in seconds — no credit card required.
         </p>
         <div className="lp-bottom-cta-actions">
-          <button
-            onClick={onEnterDashboard}
-            className="lp-btn lp-btn-primary lp-btn-lg"
-          >
-            <Sparkles size={18} />
-            <span>Get Started — It's Free</span>
-          </button>
-          {!user && (
+          {!user ? (
+            <>
+              <button
+                onClick={() => onOpenAuthModal("signup")}
+                className="lp-btn lp-btn-primary lp-btn-lg"
+              >
+                <span>Create Free Account</span>
+              </button>
+              <button
+                onClick={() => onOpenAuthModal("login")}
+                className="lp-btn lp-btn-secondary lp-btn-lg"
+              >
+                <span>Sign In</span>
+              </button>
+            </>
+          ) : (
             <button
-              onClick={() => onOpenAuthModal("login")}
-              className="lp-btn lp-btn-secondary lp-btn-lg"
+              onClick={onEnterDashboard}
+              className="lp-btn lp-btn-primary lp-btn-lg"
             >
-              <span>Sign In</span>
+              <span>View My Links</span>
             </button>
           )}
         </div>

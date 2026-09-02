@@ -1,5 +1,5 @@
 import React from "react";
-import { Link2, BarChart3, Upload, Code2, FolderPlus, ShieldCheck, User, Sparkles, LogIn, UserPlus } from "lucide-react";
+import { Link2, BarChart3, Upload, Code2, FolderPlus, ShieldCheck, User, Sparkles, LogIn, UserPlus, LogOut, Lock } from "lucide-react";
 import { UserProfile } from "../types";
 
 interface NavbarProps {
@@ -10,6 +10,7 @@ interface NavbarProps {
   onOpenFolderModal: () => void;
   onQuickShortenClick: () => void;
   onGoHome?: () => void;
+  onLogout?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -20,6 +21,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenFolderModal,
   onQuickShortenClick,
   onGoHome,
+  onLogout,
 }) => {
   return (
     <header className="sticky top-0 z-40 bg-white/95 border-b border-[#e4e4e7] shadow-xs backdrop-blur-md">
@@ -152,22 +154,36 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             {/* User Profile / Auth Action Buttons */}
             {user ? (
-              <button
-                id="btn-user-profile"
-                onClick={() => onOpenAccountModal('settings')}
-                className="flex items-center gap-2 p-1.5 sm:px-3 sm:py-1.5 border border-[#e4e4e7] rounded-[10px] hover:bg-[#f4f4f5] transition-colors bg-white shadow-2xs cursor-pointer"
-              >
-                <div className="w-7 h-7 rounded-[8px] bg-[#f1f5f9] text-[#09090b] flex items-center justify-center font-bold text-xs border border-[#e4e4e7]">
-                  {user.name ? user.name.charAt(0).toUpperCase() : <User className="w-4 h-4" />}
-                </div>
-                <div className="text-left hidden lg:block">
-                  <p className="text-xs font-bold text-[#09090b] leading-none">{user.name || "My Account"}</p>
-                  <span className="text-[10px] text-[#059669] font-semibold flex items-center gap-1 mt-0.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#10b981] inline-block"></span>
-                    {user.plan || "Pro"} Plan
-                  </span>
-                </div>
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  id="btn-user-profile"
+                  onClick={() => onOpenAccountModal('settings')}
+                  className="flex items-center gap-2 p-1.5 sm:px-3 sm:py-1.5 border border-[#e4e4e7] rounded-[10px] hover:bg-[#f4f4f5] transition-colors bg-white shadow-2xs cursor-pointer"
+                >
+                  <div className="w-7 h-7 rounded-[8px] bg-[#f1f5f9] text-[#09090b] flex items-center justify-center font-bold text-xs border border-[#e4e4e7]">
+                    {user.name ? user.name.charAt(0).toUpperCase() : <User className="w-4 h-4" />}
+                  </div>
+                  <div className="text-left hidden lg:block">
+                    <p className="text-xs font-bold text-[#09090b] leading-none">{user.name || "My Account"}</p>
+                    <span className="text-[10px] text-[#059669] font-semibold flex items-center gap-1 mt-0.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#10b981] inline-block"></span>
+                      {user.plan || "Pro"} Plan
+                    </span>
+                  </div>
+                </button>
+
+                {onLogout && (
+                  <button
+                    id="btn-nav-logout"
+                    onClick={onLogout}
+                    title="Log Out"
+                    className="p-2 sm:px-3 sm:py-2 text-[#71717a] hover:text-[#dc2626] hover:bg-[#fee2e2] rounded-[10px] transition-colors border border-[#e4e4e7] flex items-center gap-1.5 text-xs font-semibold bg-white cursor-pointer shadow-2xs"
+                  >
+                    <LogOut className="w-3.5 h-3.5" />
+                    <span className="hidden sm:inline">Log Out</span>
+                  </button>
+                )}
+              </div>
             ) : (
               <div className="flex items-center gap-2">
                 <button

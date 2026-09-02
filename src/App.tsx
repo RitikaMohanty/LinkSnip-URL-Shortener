@@ -164,6 +164,32 @@ export default function App() {
     }
   };
 
+  const handleUserUpdated = (updatedUser: UserProfile | null) => {
+    setUser(updatedUser);
+    if (!updatedUser) {
+      setShowLandingPage(true);
+      setActiveTab('links');
+      setIsAccountModalOpen(false);
+      setEditingLink(null);
+      setQrModalLink(null);
+      setIsBulkModalOpen(false);
+      setIsFolderModalOpen(false);
+    } else {
+      setShowLandingPage(false);
+      setIsAccountModalOpen(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/auth/logout", { method: "POST" });
+    } catch (err) {
+      console.error("Logout failed:", err);
+    } finally {
+      handleUserUpdated(null);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#f8fafc] text-[#09090b] flex flex-col font-sans">
       {showLandingPage ? (
@@ -190,7 +216,7 @@ export default function App() {
                       onClick={() => { setShowLandingPage(false); setActiveTab('links'); }}
                       className="inline-flex items-center gap-2 px-4 py-2 bg-[#09090b] hover:bg-[#27272a] text-white text-sm font-semibold rounded-[10px] shadow-sm transition-all cursor-pointer"
                     >
-                      <span>Dashboard</span>
+                      <span>My Links</span>
                       <ArrowRight className="w-4 h-4" />
                     </button>
                   ) : (
@@ -202,11 +228,11 @@ export default function App() {
                         Sign In
                       </button>
                       <button
-                        onClick={() => { setShowLandingPage(false); setActiveTab('links'); }}
+                        onClick={() => handleOpenAuthModal('signup')}
                         className="inline-flex items-center gap-2 px-4 py-2 bg-[#09090b] hover:bg-[#27272a] text-white text-sm font-semibold rounded-[10px] shadow-sm transition-all cursor-pointer"
                       >
                         <Sparkles className="w-3.5 h-3.5" />
-                        <span>Get Started</span>
+                        <span>Sign Up</span>
                       </button>
                     </>
                   )}
@@ -251,7 +277,7 @@ export default function App() {
             isOpen={isAccountModalOpen}
             initialTab={accountModalTab}
             onClose={() => setIsAccountModalOpen(false)}
-            onUserUpdated={(u) => setUser(u)}
+            onUserUpdated={handleUserUpdated}
           />
         </>
       ) : (
@@ -268,6 +294,7 @@ export default function App() {
           window.scrollTo({ top: 0, behavior: "smooth" });
         }}
         onGoHome={() => setShowLandingPage(true)}
+        onLogout={handleLogout}
       />
 
       {/* Main Content Area */}
@@ -440,7 +467,7 @@ export default function App() {
         isOpen={isAccountModalOpen}
         initialTab={accountModalTab}
         onClose={() => setIsAccountModalOpen(false)}
-        onUserUpdated={(u) => setUser(u)}
+        onUserUpdated={handleUserUpdated}
       />
         </>
       )}

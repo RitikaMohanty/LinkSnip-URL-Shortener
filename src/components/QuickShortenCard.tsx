@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link2, Sparkles, SlidersHorizontal, ChevronDown, ChevronUp, Copy, Check, QrCode, ExternalLink, Lock, Calendar, MousePointerClick, Tag, Folder, BarChart3, AlertCircle, LogIn, UserPlus, ShieldAlert } from "lucide-react";
+import { Link2, Sparkles, Copy, Check, QrCode, ExternalLink, Lock, Calendar, MousePointerClick, Tag, Folder, BarChart3, AlertCircle, LogIn, UserPlus, ShieldAlert } from "lucide-react";
 import { LinkItem, FolderItem, CreateLinkInput, UserProfile } from "../types";
 
 interface QuickShortenCardProps {
@@ -20,7 +20,6 @@ export const QuickShortenCard: React.FC<QuickShortenCardProps> = ({
   onOpenAuthModal,
 }) => {
   const [originalUrl, setOriginalUrl] = useState("");
-  const [showAdvanced, setShowAdvanced] = useState(false);
   const [customAlias, setCustomAlias] = useState("");
   const [title, setTitle] = useState("");
   const [selectedFolder, setSelectedFolder] = useState("");
@@ -135,30 +134,6 @@ export const QuickShortenCard: React.FC<QuickShortenCardProps> = ({
             Create branded, trackable short links with real-time click analytics & QR codes.
           </p>
         </div>
-
-        {/* Advanced Options Toggle */}
-        <button
-          type="button"
-          onClick={() => setShowAdvanced(!showAdvanced)}
-          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[10px] text-xs font-semibold border transition-all cursor-pointer ${
-            showAdvanced
-              ? 'bg-[#09090b] border-[#09090b] text-white shadow-xs'
-              : 'bg-white border-[#e4e4e7] text-[#52525b] hover:text-[#09090b] hover:bg-[#f4f4f5]'
-          }`}
-        >
-          {user ? (
-            <SlidersHorizontal className="w-3.5 h-3.5" />
-          ) : (
-            <Lock className="w-3.5 h-3.5 text-[#71717a]" />
-          )}
-          <span>Advanced Options</span>
-          {!user && (
-            <span className="text-[10px] px-1.5 py-0.2 bg-[#f1f5f9] text-[#52525b] rounded font-semibold border border-[#e4e4e7]">
-              Member
-            </span>
-          )}
-          {showAdvanced ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
-        </button>
       </div>
 
       <form onSubmit={(e) => handleSubmit(e)} className="space-y-4">
@@ -216,11 +191,9 @@ export const QuickShortenCard: React.FC<QuickShortenCardProps> = ({
           </div>
         )}
 
-        {/* Advanced Options Section */}
-        {showAdvanced && (
-          user ? (
-            /* --- VISIBLE FOR LOGGED IN / SIGNED UP USER --- */
-            <div className="pt-4 border-t border-[#e4e4e7] grid grid-cols-1 md:grid-cols-2 gap-4 text-xs animate-fade-in">
+        {/* Link Customization Options (Available for logged-in members) */}
+        {user && (
+          <div className="pt-4 border-t border-[#e4e4e7] grid grid-cols-1 md:grid-cols-2 gap-4 text-xs animate-fade-in">
               {/* Custom Alias */}
               <div>
                 <label className="block font-semibold text-[#09090b] mb-1.5 flex items-center gap-1.5">
@@ -431,48 +404,8 @@ export const QuickShortenCard: React.FC<QuickShortenCardProps> = ({
                 )}
               </div>
             </div>
-          ) : (
-            /* --- GUEST PROMPT --- */
-            <div className="pt-4 border-t border-[#e4e4e7] animate-fade-in">
-              <div className="bg-[#f8fafc] border border-[#e4e4e7] rounded-[12px] p-5 sm:p-6 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-5">
-                <div className="space-y-2 max-w-xl">
-                  <div className="flex items-center justify-center sm:justify-start gap-2">
-                    <span className="p-1.5 bg-white text-[#09090b] rounded-[8px] border border-[#e4e4e7]">
-                      <Lock className="w-4 h-4" />
-                    </span>
-                    <h3 
-                      style={{ fontFamily: "'Outfit', sans-serif" }}
-                      className="text-sm font-bold text-[#09090b]"
-                    >
-                      Sign in to unlock custom aliases and link controls
-                    </h3>
-                  </div>
-                  <p className="text-xs text-[#52525b] leading-relaxed">
-                    Custom aliases (<span className="font-mono text-[#09090b]">/r/my-brand</span>), password gates, expiration thresholds, and UTM tracking are available for registered members.
-                  </p>
-                </div>
-
-                <div className="flex flex-col sm:flex-row items-center gap-2 shrink-0 w-full sm:w-auto">
-                  <button
-                    type="button"
-                    onClick={() => onOpenAuthModal('login')}
-                    className="w-full sm:w-auto px-4 py-2 bg-white hover:bg-[#f4f4f5] border border-[#e4e4e7] text-[#09090b] rounded-[10px] font-semibold text-xs transition-colors cursor-pointer"
-                  >
-                    Sign In
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => onOpenAuthModal('signup')}
-                    className="w-full sm:w-auto px-4 py-2 bg-[#09090b] hover:bg-[#27272a] text-white rounded-[10px] font-semibold text-xs shadow-xs transition-colors cursor-pointer"
-                  >
-                    Register Free
-                  </button>
-                </div>
-              </div>
-            </div>
-          )
-        )}
-      </form>
+          )}
+        </form>
 
       {/* Immediate Result Card */}
       {createdLink && (

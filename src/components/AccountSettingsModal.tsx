@@ -299,7 +299,7 @@ export const AccountSettingsModal: React.FC<AccountSettingsModalProps> = ({
               disabled={isLoading}
               className="w-full py-2.5 bg-[#09090b] hover:bg-[#27272a] text-white rounded-[10px] font-bold text-xs shadow-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-60"
             >
-              {isLoading ? "Signing In..." : "Sign In & Unlock Advanced Options"}
+              {isLoading ? "Signing In..." : "Sign In"}
             </button>
 
             <p className="text-center text-[11px] text-[#71717a] pt-1">
@@ -372,7 +372,7 @@ export const AccountSettingsModal: React.FC<AccountSettingsModalProps> = ({
               disabled={isLoading}
               className="w-full py-2.5 bg-[#09090b] hover:bg-[#27272a] text-white rounded-[10px] font-bold text-xs shadow-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-60"
             >
-              {isLoading ? "Creating Account..." : "Create Account & Unlock Advanced Options"}
+              {isLoading ? "Creating Account..." : "Create Free Account"}
             </button>
 
             <p className="text-center text-[11px] text-[#71717a] pt-1">
